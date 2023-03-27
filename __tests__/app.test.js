@@ -36,12 +36,12 @@ describe("ENDPOINT: /api/topics", () => {
         });
       });
   });
-  test("GET 404: responds with 404 status code when user inputs a non-existent file path", () => {
+  test("GET 404: responds with 404 status code when user inputs a non-existent URl route", () => {
     return request(app)
       .get("/api/wrong-topics-path")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Invalid file path");
+        expect(body.msg).toBe("Invalid URL");
       });
   });
 });

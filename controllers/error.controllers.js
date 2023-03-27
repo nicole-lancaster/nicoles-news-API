@@ -1,5 +1,5 @@
-const customErrorHandling = (request, response) => {
-  response.status(404).send({ msg: "Invalid file path" });
+const badUrlHandling = (request, response) => {
+  response.status(404).send({ msg: "Invalid URL" });
 };
 
-module.exports = { customErrorHandling };
+module.exports = { badUrlHandling };
