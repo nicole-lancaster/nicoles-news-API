@@ -73,6 +73,21 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         expect(body.msg).toBe("Article ID does not exist");
       });
   });
+  test("GET 400: responds with 400 status code when user inputs an invalid article_id", () => {
+    return request(app)
+      .get("/api/articles/pineapple")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID invalid - must be a number");
+      });
+  });
+
+  test("GET 404: responds with 404 status code when user inputs article_id of 0 (which is a num but doesn't exist)", () => {
+    return request(app)
+      .get("/api/articles/0")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID does not exist");
+      });
+  });
 });
-
-
