@@ -67,5 +67,4 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
   });
 });
 
-// /api/article/10923470 --> article does not exist - 404 not found
-// /api/article/pineapple --> invalid ID - 400 bad request
+
