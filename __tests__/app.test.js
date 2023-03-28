@@ -65,6 +65,14 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         });
       });
   });
+  test("GET 404: responds with 404 status code when user inputs a non-existent article number", () => {
+    return request(app)
+      .get("/api/articles/234234234")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID does not exist");
+      });
+  });
 });
 
 
