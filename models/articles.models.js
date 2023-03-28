@@ -1,5 +1,11 @@
 const db = require("../db/connection.js");
 
+const fetchAllArticles = (article) => {
+  return db.query(`SELECT * FROM articles`).then(({ rows }) => {
+    return rows;
+  });
+};
+
 const fetchArticlesById = (article_id) => {
   return db
     .query(`SELECT * FROM articles WHERE article_id = $1;`, [article_id])
@@ -7,9 +13,12 @@ const fetchArticlesById = (article_id) => {
       if (rows.length > 0) {
         return rows[0];
       } else {
-        return Promise.reject({ status: 404, msg: "Article ID does not exist" });
+        return Promise.reject({
+          status: 404,
+          msg: "Article ID does not exist",
+        });
       }
-    })
+    });
 };
 
-module.exports = { fetchArticlesById };
+module.exports = { fetchAllArticles, fetchArticlesById };

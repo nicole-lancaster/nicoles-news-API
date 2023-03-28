@@ -1,11 +1,22 @@
 const articles = require("../db/data/test-data/articles.js");
-const { fetchArticlesById } = require("../models/articles.models.js");
+const {
+  fetchArticlesById,
+  fetchAllArticles,
+} = require("../models/articles.models.js");
+
+const getAllArticles = (request, response, next) => {
+  fetchAllArticles().then(() => {
+    return response.status(200).send({ articles: articles });
+  }) .catch((err) => {
+    next(err);
+  });
+};
 
 const getArticlesById = (request, response, next) => {
   const { article_id } = request.params;
   if (isNaN(article_id)) {
-    const err = { status: 400, msg: "Article ID invalid - must be a number" }
-    next(err)
+    const err = { status: 400, msg: "Article ID invalid - must be a number" };
+    next(err);
   }
   const articlePromise = fetchArticlesById(article_id);
   articlePromise
@@ -17,4 +28,4 @@ const getArticlesById = (request, response, next) => {
     });
 };
 
-module.exports = { getArticlesById };
+module.exports = { getArticlesById, getAllArticles };

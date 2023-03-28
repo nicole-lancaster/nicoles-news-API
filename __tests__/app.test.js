@@ -91,3 +91,29 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
       });
   });
 });
+
+describe("ENDPOINT: /api/articles", () => {
+  test("GET 200: response with an array of article objects, with all the correct properties", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles).toHaveLength(12);
+        expect(
+          articles.forEach((article) => {
+            expect(article).toMatchObject({
+              author: expect.any(String),
+              title: expect.any(String),
+              // article_id: not in test data
+              topic: expect.any(String),
+              created_at: expect.any(Number),
+              // votes: expect.any(Number), don't all have votes
+              article_img_url: expect.any(String),
+            });
+          })
+        );
+      });
+  });
+});
