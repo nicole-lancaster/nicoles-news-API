@@ -108,9 +108,10 @@ describe("ENDPOINT: /api/articles", () => {
               title: expect.any(String),
               // article_id: not in test data
               topic: expect.any(String),
-              created_at: expect.any(Number),
+              created_at: expect.any(String),
               // votes: expect.any(Number), don't all have votes
               article_img_url: expect.any(String),
+              comment_count: expect.any(String)
             });
           })
         );

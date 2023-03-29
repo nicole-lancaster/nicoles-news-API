@@ -1,9 +1,18 @@
 const db = require("../db/connection.js");
 
-const fetchAllArticles = (article) => {
-  return db.query(`SELECT * FROM articles`).then(({ rows }) => {
-    return rows;
-  });
+const fetchAllArticles = () => {
+  return db
+    .query(
+      `SELECT articles.*, COUNT(comments.article_id) AS comment_count
+      FROM articles
+      LEFT JOIN comments ON comments.article_id = articles.article_id
+      GROUP BY articles.article_id;`
+    )
+    .then(({ rows }) => {
+      return rows;
+    }).catch((err) => {
+     console.log(err)
+    })
 };
 
 const fetchArticlesById = (article_id) => {
