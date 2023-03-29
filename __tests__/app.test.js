@@ -26,8 +26,7 @@ describe("ENDPOINT: /api/*", () => {
         expect(body.msg).toBe("Invalid URL");
       });
   });
-})
-
+});
 
 describe("ENDPOINT: /api/topics", () => {
   test("GET 200: should respond with an array of topic objects, each of which should have slug and description properties", () => {
@@ -48,7 +47,6 @@ describe("ENDPOINT: /api/topics", () => {
         });
       });
   });
-  
 });
 
 describe("ENDPOINT: /api/articles/:article_id", () => {
@@ -86,7 +84,7 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         expect(body.msg).toBe("Article ID does not exist");
       });
   });
-    test("GET 404: responds with 404 status code when user inputs article_id of 0 (which is a num but doesn't exist)", () => {
+  test("GET 404: responds with 404 status code when user inputs article_id of 0 (which is a num but doesn't exist)", () => {
     return request(app)
       .get("/api/articles/0")
       .expect(404)
@@ -103,7 +101,6 @@ describe("ENDPOINT: /api/articles", () => {
       .expect(200)
       .then(({ body }) => {
         const { articles } = body;
-        expect(articles).toBeInstanceOf(Array);
         expect(articles).toHaveLength(12);
         expect(
           articles.forEach((article) => {
@@ -127,17 +124,9 @@ describe("ENDPOINT: /api/articles", () => {
       .expect(200)
       .then(({ body }) => {
         const { articles } = body;
-        expect(articles).toBeInstanceOf(Array);
-        expect(articles).toHaveLength(12);
-        const articlesCopy = [...articles];
-        const sortedArticlesByDateDesc = articlesCopy.sort(
-          (articleA, articleB) => {
-            return (
-              new Date(articleB.created_at) - new Date(articleA.created_at)
-            );
-          }
-        );
-        expect(articles).toEqual(sortedArticlesByDateDesc);
+        expect(articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
       });
   });
 });
