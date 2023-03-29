@@ -78,7 +78,7 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
       .get("/api/articles/pineapple")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Article ID invalid - must be a number");
+        expect(body.msg).toBe("Invalid input");
       });
   });
 
