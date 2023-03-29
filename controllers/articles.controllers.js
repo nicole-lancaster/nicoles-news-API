@@ -14,10 +14,6 @@ const getAllArticles = (request, response, next) => {
 
 const getArticlesById = (request, response, next) => {
   const { article_id } = request.params;
-  if (isNaN(article_id)) {
-    const err = { status: 400, msg: "Article ID invalid - must be a number" };
-    next(err);
-  }
   const articlePromise = fetchArticlesById(article_id);
   articlePromise
     .then((article) => {

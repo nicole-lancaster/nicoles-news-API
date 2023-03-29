@@ -10,4 +10,14 @@ const customErrorMiddleware = (err, request, response, next) => {
   } else next(err);
 };
 
-module.exports = { badUrlHandling, customErrorMiddleware };
+const handlePsqlErrorsMiddleware = (err, req, res, next) => {
+  if (err.code === "22P02") {
+    res.status(400).send({ msg: "Invalid input" });
+  } else next(err);
+};
+
+module.exports = {
+  badUrlHandling,
+  customErrorMiddleware,
+  handlePsqlErrorsMiddleware,
+};
