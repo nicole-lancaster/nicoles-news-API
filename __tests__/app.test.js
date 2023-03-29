@@ -106,10 +106,10 @@ describe("ENDPOINT: /api/articles", () => {
             expect(article).toMatchObject({
               author: expect.any(String),
               title: expect.any(String),
-              // article_id: not in test data
+              article_id: expect.any(Number),
               topic: expect.any(String),
               created_at: expect.any(String),
-              // votes: expect.any(Number), don't all have votes
+              votes: expect.any(Number),
               article_img_url: expect.any(String),
               comment_count: expect.any(String)
             });
