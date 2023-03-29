@@ -1,6 +1,7 @@
 const {
   fetchArticlesById,
-  fetchAllArticles, fetchCommentsByArticleId
+  fetchAllArticles,
+  fetchCommentsByArticleId,
 } = require("../models/articles.models.js");
 
 const getAllArticles = (request, response, next) => {
@@ -30,12 +31,11 @@ const getCommentsByArticleId = (request, response, next) => {
   const commentsPromise = fetchCommentsByArticleId(article_id);
   commentsPromise
     .then((comments) => {
-      console.log(comments)
       return response.status(200).send({ comments: comments });
     })
     .catch((err) => {
       next(err);
     });
-}
+};
 
 module.exports = { getArticlesById, getAllArticles, getCommentsByArticleId };
