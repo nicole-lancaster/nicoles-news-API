@@ -165,4 +165,13 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         });
       });
   });
+  test("GET 200: responds with an empty array if there are no comments associated with that article ID", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toEqual([]);
+      });
+  });
 });
