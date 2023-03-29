@@ -192,4 +192,12 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Article ID does not exist");
       });
   });
+  test("GET 400: responds with 400 status code when user inputs an invalid article_id", () => {
+    return request(app)
+      .get("/api/articles/pineapple/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
 });
