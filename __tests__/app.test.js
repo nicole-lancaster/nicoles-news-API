@@ -45,3 +45,49 @@ describe("ENDPOINT: /api/topics", () => {
       });
   });
 });
+
+describe("ENDPOINT: /api/articles/:article_id", () => {
+  test("GET 200: should respond with a single (article) object, with all the correct properties", () => {
+    return request(app)
+      .get("/api/articles/10")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: 10,
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          article_img_url: expect.any(String),
+        });
+      });
+  });
+  test("GET 404: responds with 404 status code when user inputs a non-existent article number", () => {
+    return request(app)
+      .get("/api/articles/234234234")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID does not exist");
+      });
+  });
+  test("GET 400: responds with 400 status code when user inputs an invalid article_id", () => {
+    return request(app)
+      .get("/api/articles/pineapple")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+
+  test("GET 404: responds with 404 status code when user inputs article_id of 0 (which is a num but doesn't exist)", () => {
+    return request(app)
+      .get("/api/articles/0")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID does not exist");
+      });
+  });
+});
