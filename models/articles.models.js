@@ -6,13 +6,15 @@ const fetchAllArticles = () => {
       `SELECT articles.*, COUNT(comments.article_id) AS comment_count
       FROM articles
       LEFT JOIN comments ON comments.article_id = articles.article_id
-      GROUP BY articles.article_id;`
+      GROUP BY articles.article_id
+      ORDER BY created_at DESC;`
     )
     .then(({ rows }) => {
       return rows;
-    }).catch((err) => {
-     console.log(err)
     })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const fetchArticlesById = (article_id) => {

@@ -111,10 +111,29 @@ describe("ENDPOINT: /api/articles", () => {
               created_at: expect.any(String),
               votes: expect.any(Number),
               article_img_url: expect.any(String),
-              comment_count: expect.any(String)
+              comment_count: expect.any(String),
             });
           })
         );
+      });
+  });
+  test("GET 200: responds with an array of article objects, correctly sorted by date (descending order)", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles).toHaveLength(12);
+        const articlesCopy = [...articles];
+        const sortedArticlesByDateDesc = articlesCopy.sort(
+          (articleA, articleB) => {
+            return (
+              new Date(articleB.created_at) - new Date(articleA.created_at)
+            );
+          }
+        );
+        expect(articles).toEqual(sortedArticlesByDateDesc);
       });
   });
 });
