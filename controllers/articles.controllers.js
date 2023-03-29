@@ -28,10 +28,17 @@ const getArticlesById = (request, response, next) => {
 
 const getCommentsByArticleId = (request, response, next) => {
   const { article_id } = request.params;
-  const commentsPromise = fetchCommentsByArticleId(article_id);
-  commentsPromise
-    .then((comments) => {
-      return response.status(200).send({ comments: comments });
+  const articlePromise = fetchArticlesById(article_id);
+  articlePromise
+    .then(() => {
+      const commentsPromise = fetchCommentsByArticleId(article_id);
+      commentsPromise
+        .then((comments) => {
+          return response.status(200).send({ comments: comments });
+        })
+        .catch((err) => {
+          next(err);
+        });
     })
     .catch((err) => {
       next(err);
