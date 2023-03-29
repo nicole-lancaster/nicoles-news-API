@@ -11,9 +11,6 @@ const fetchAllArticles = () => {
     )
     .then(({ rows }) => {
       return rows;
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };
 
