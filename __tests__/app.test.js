@@ -154,4 +154,15 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         });
       });
   });
+  test("GET 200: responds with an array of comment objects, correctly sorted by date (descending order)", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
 });
