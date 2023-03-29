@@ -165,13 +165,23 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         });
       });
   });
-  test("GET 200: responds with an empty array if there are no comments associated with that article ID", () => {
+  test("GET 200: responds with an empty array if article exists but there are no comments associated with that article ID", () => {
     return request(app)
       .get("/api/articles/2/comments")
       .expect(200)
       .then(({ body }) => {
         const { comments } = body;
         expect(comments).toEqual([]);
+      });
+  });
+  test("GET 404: responds with 404 status code when user inputs an out of range article number", () => {
+    return request(app)
+      .get("/api/articles/9332879283/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "Out of range for type integer - choose a smaller number"
+        );
       });
   });
 });
