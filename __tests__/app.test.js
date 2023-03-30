@@ -148,7 +148,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
               created_at: expect.any(String),
               author: expect.any(String),
               body: expect.any(String),
-              article_id: expect.any(Number),
+              article_id: 3,
             })
           );
         });
