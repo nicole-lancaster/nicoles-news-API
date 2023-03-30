@@ -72,7 +72,7 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         });
       });
   });
-  test.skip("PATCH 200: updates a valid article with an existing vote count", () => {
+  test("PATCH 200: updates a valid article with an existing vote count that isn't 0", () => {
     const requestBody = {
       inc_votes: -100,
     };
