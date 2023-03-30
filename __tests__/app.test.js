@@ -200,4 +200,25 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Invalid input");
       });
   });
+  test("POST 201: /api/articles/:article_id/comments", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toMatchObject({
+          comment_id: expect.any(Number),
+          votes: 0,
+          created_at: expect.any(String),
+          author: "butter_bridge",
+          body: "I am 100% sure that we're not completely sure.",
+          article_id: 5,
+        });
+      });
+  });
 });
