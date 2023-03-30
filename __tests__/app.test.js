@@ -49,7 +49,62 @@ describe("ENDPOINT: /api/topics", () => {
   });
 });
 
+describe("ENDPOINT: /api/articles", () => {
+  test("GET 200: response with an array of article objects, with all the correct properties", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toHaveLength(12);
+        expect(
+          articles.forEach((article) => {
+            expect(article).toMatchObject({
+              author: expect.any(String),
+              title: expect.any(String),
+              article_id: expect.any(Number),
+              topic: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              article_img_url: expect.any(String),
+              comment_count: expect.any(String),
+            });
+          })
+        );
+      });
+  });
+  test("GET 200: responds with an array of article objects, correctly sorted by date (descending order)", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+});
+
 describe("ENDPOINT: /api/articles/:article_id", () => {
+  test("GET 200: should respond with a single (article) object, with all the correct properties", () => {
+    return request(app)
+      .get("/api/articles/10")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: 10,
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          article_img_url: expect.any(String),
+        });
+      });
+  });
   test("PATCH 200: accepts a request of an object with a vote increment property and a newVote number (value), and responds with the updated article object", () => {
     const requestBody = {
       inc_votes: -100,
@@ -94,24 +149,6 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         });
       });
   });
-  test("GET 200: should respond with a single (article) object, with all the correct properties", () => {
-    return request(app)
-      .get("/api/articles/10")
-      .expect(200)
-      .then(({ body }) => {
-        const { article } = body;
-        expect(article).toMatchObject({
-          author: expect.any(String),
-          title: expect.any(String),
-          article_id: 10,
-          body: expect.any(String),
-          topic: expect.any(String),
-          created_at: expect.any(String),
-          votes: expect.any(Number),
-          article_img_url: expect.any(String),
-        });
-      });
-  });
 
   test("GET 400: responds with 400 status code when user inputs an invalid article_id", () => {
     return request(app)
@@ -138,41 +175,40 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         expect(body.msg).toBe("Article ID does not exist");
       });
   });
-});
-
-describe("ENDPOINT: /api/articles", () => {
-  test("GET 200: response with an array of article objects, with all the correct properties", () => {
+  test("PATCH 400: responds with a 400 status code and error message if user inputs a valid article number but missing post body properties", () => {
+    const requestBody = {};
     return request(app)
-      .get("/api/articles")
-      .expect(200)
-      .then(({ body }) => {
-        const { articles } = body;
-        expect(articles).toHaveLength(12);
-        expect(
-          articles.forEach((article) => {
-            expect(article).toMatchObject({
-              author: expect.any(String),
-              title: expect.any(String),
-              article_id: expect.any(Number),
-              topic: expect.any(String),
-              created_at: expect.any(String),
-              votes: expect.any(Number),
-              article_img_url: expect.any(String),
-              comment_count: expect.any(String),
-            });
-          })
+      .patch("/api/articles/1")
+      .send(requestBody)
+      .expect(400)
+      .then((articleOrError) => {
+        expect(articleOrError.body.msg).toBe(
+          "Malformed body/missing required fields"
         );
       });
   });
-  test("GET 200: responds with an array of article objects, correctly sorted by date (descending order)", () => {
+  test("PATCH 400: responds with a 400 status code and error message if user inputs a valid article number but invalid post body property data types", () => {
+    const requestBody = {
+      inc_votes: "pineapple",
+    };
     return request(app)
-      .get("/api/articles")
-      .expect(200)
+      .patch("/api/articles/4")
+      .send(requestBody)
+      .expect(400)
       .then(({ body }) => {
-        const { articles } = body;
-        expect(articles).toBeSortedBy("created_at", {
-          descending: true,
-        });
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+  test("PATCH 400: responds with a 400 status code and error message if user inputs a valid article number but invalid url param data types", () => {
+    const requestBody = {
+      inc_votes: 1,
+    };
+    return request(app)
+      .patch("/api/articles/pineapple")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
       });
   });
 });
@@ -373,5 +409,3 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       });
   });
 });
-
-// /api/resource body: {} -> malformed body / missing required fields: 400 Bad Request
