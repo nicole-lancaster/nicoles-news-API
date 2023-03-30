@@ -49,6 +49,12 @@ const getCommentsByArticleId = (request, response, next) => {
 const postCommentByArticleId = (request, response, next) => {
   const { article_id } = request.params;
   const { body, username } = request.body;
+  if (!body || !username) {
+    next({
+      status: 400,
+      msg: "Malformed body/missing required fields",
+    });
+  }
   const articlePromise = fetchArticlesById(article_id);
   articlePromise.then(() => {
     insertCommentByArticleId(article_id, body, username)

@@ -63,8 +63,7 @@ const insertCommentByArticleId = (article_id, comment, author) => {
     .query(insertCommentsQueryStr)
     .then((result) => {
       return result.rows[0];
-    })
-    .catch((error) => console.error(error));
+    });
 };
 
 module.exports = {

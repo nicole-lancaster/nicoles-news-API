@@ -68,6 +68,7 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         });
       });
   });
+ 
   test("GET 400: responds with 400 status code when user inputs an invalid article_id", () => {
     return request(app)
       .get("/api/articles/pineapple")
@@ -83,7 +84,11 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
       .then(({ body }) => {
         expect(body.msg).toBe("Article ID does not exist");
       });
+      
+      
   });
+
+
   test("GET 404: responds with 404 status code when user inputs article_id of 0 (which is a num but doesn't exist)", () => {
     return request(app)
       .get("/api/articles/0")
@@ -231,7 +236,9 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       .send(requestBody)
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Out of range for type integer - choose a smaller number");
+        expect(body.msg).toBe(
+          "Out of range for type integer - choose a smaller number"
+        );
       });
   });
 
@@ -248,7 +255,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Article ID does not exist");
       });
   });
-  
+
   test("POST 400: responds with a 400 status code and error message if user inputs an invalid article ID", () => {
     const requestBody = {
       username: "butter_bridge",
@@ -260,6 +267,68 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid input");
+      });
+  });
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but missing post body properties", () => {
+    const requestBody = {};
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
+      });
+  });
+
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but missing post body.body property", () => {
+    const requestBody = {
+      username: "hi"
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
+      });
+  });
+
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but invalid post body property data types", () => {
+    const requestBody = {
+      username: 5,
+      body: 5
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Foreign key constraint");
+      });
+  });
+
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but missing post body.username property", () => {
+    const requestBody = {
+      body: "hi"
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
+      });
+  });
+
+
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but undefined post body", () => {
+    const requestBody = undefined;
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
       });
   });
 });

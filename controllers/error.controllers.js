@@ -15,6 +15,8 @@ const handlePsqlErrorsMiddleware = (err, req, res, next) => {
     res.status(400).send({ msg: "Invalid input" });
   } else if (err.code === "22003") {
     res.status(400).send({ msg: "Out of range for type integer - choose a smaller number"  })
+  } else if (err.code === '23503') {
+    res.status(400).send({ msg: "Foreign key constraint" })
   }
   else next(err);
 };
