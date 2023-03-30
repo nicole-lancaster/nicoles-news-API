@@ -5,6 +5,7 @@ const { getTopics } = require("./controllers/topics.controllers.js");
 const {
   getArticlesById,
   getAllArticles,
+  getCommentsByArticleId,
 } = require("./controllers/articles.controllers");
 const {
   badUrlHandling,
@@ -15,6 +16,7 @@ const {
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticlesById);
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 app.use(customErrorMiddleware);
 app.use(handlePsqlErrorsMiddleware);

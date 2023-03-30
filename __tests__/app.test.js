@@ -130,3 +130,74 @@ describe("ENDPOINT: /api/articles", () => {
       });
   });
 });
+
+describe("ENDPOINT: /api/articles/:article_id/comments", () => {
+  test("GET 200: responds with an array of comments for the given article ID", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toBeInstanceOf(Array);
+        expect(comments).toHaveLength(2);
+        comments.forEach((comments) => {
+          expect(comments).toEqual(
+            expect.objectContaining({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number),
+              created_at: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+              article_id: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("GET 200: responds with an array of comment objects, correctly sorted by date (descending order)", () => {
+    return request(app)
+      .get("/api/articles/3/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+  test("GET 200: responds with an empty array if article exists but there are no comments associated with that article ID", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toEqual([]);
+      });
+  });
+  test("GET 404: responds with 404 status code when user inputs an out of range article number", () => {
+    return request(app)
+      .get("/api/articles/9332879283/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "Out of range for type integer - choose a smaller number"
+        );
+      });
+  });
+  test("GET 404: responds with 404 status code when user inputs a non-existent article number", () => {
+    return request(app)
+      .get("/api/articles/5667/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID does not exist");
+      });
+  });
+  test("GET 400: responds with 400 status code when user inputs an invalid article_id", () => {
+    return request(app)
+      .get("/api/articles/pineapple/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+});
