@@ -200,7 +200,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Invalid input");
       });
   });
-  test("POST 201: /api/articles/:article_id/comments", () => {
+  test("POST 201: accepts a request of an object with username and body property, and responds withthe posted comment object", () => {
     const requestBody = {
       username: "butter_bridge",
       body: "I am 100% sure that we're not completely sure.",
@@ -221,4 +221,47 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         });
       });
   });
+  test("POST 400: responds with a 400 status code and error message if user inputs an invalid number", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/23423421123/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Out of range for type integer - choose a smaller number");
+      });
+  });
+
+  test("POST 404: responds with a 404 status code and error message if user inputs an non existent article ID", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/5432/comments")
+      .send(requestBody)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID does not exist");
+      });
+  });
+  
+  test("POST 400: responds with a 400 status code and error message if user inputs an invalid article ID", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/apples/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
 });
+
+// /api/resource body: {} -> malformed body / missing required fields: 400 Bad Request
