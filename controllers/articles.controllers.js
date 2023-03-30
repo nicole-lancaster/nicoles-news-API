@@ -3,6 +3,7 @@ const {
   fetchAllArticles,
   fetchCommentsByArticleId,
   insertCommentByArticleId,
+  updateArticleById,
 } = require("../models/articles.models.js");
 
 const getAllArticles = (request, response, next) => {
@@ -56,17 +57,31 @@ const postCommentByArticleId = (request, response, next) => {
     });
   }
   const articlePromise = fetchArticlesById(article_id);
-  articlePromise.then(() => {
-    insertCommentByArticleId(article_id, body, username)
-      .then((comment) => {
-        response.status(201).send({ comment: comment });
-      })
-      .catch((err) => {
-        next(err);
-      });
-  }).catch((err) => {
-    next(err);
-  });
+  articlePromise
+    .then(() => {
+      insertCommentByArticleId(article_id, body, username)
+        .then((comment) => {
+          response.status(201).send({ comment: comment });
+        })
+        .catch((err) => {
+          next(err);
+        });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+const patchArticleById = (request, response, next) => {
+  const { article_id } = request.params;
+  const { inc_votes } = request.body;
+  updateArticleById(article_id, inc_votes)
+    .then((article) => {
+      response.status(200).send({ article: article });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 module.exports = {
@@ -74,4 +89,5 @@ module.exports = {
   getAllArticles,
   getCommentsByArticleId,
   postCommentByArticleId,
+  patchArticleById,
 };

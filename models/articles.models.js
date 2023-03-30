@@ -59,11 +59,23 @@ const insertCommentByArticleId = (article_id, comment, author) => {
     [comment, author, article_id]
   );
 
-  return db
-    .query(insertCommentsQueryStr)
-    .then((result) => {
-      return result.rows[0];
-    });
+  return db.query(insertCommentsQueryStr).then((result) => {
+    return result.rows[0];
+  });
+};
+
+const updateArticleById = (article_id, votes) => {
+  const updateQueryStr = format(
+    `UPDATE articles SET votes = %L WHERE article_id = %L
+    RETURNING author, title, article_id, body, topic, created_at, votes, article_img_url;
+    `,
+    votes,
+    article_id
+  );
+
+  return db.query(updateQueryStr).then((result) => {
+    return result.rows[0];
+  });
 };
 
 module.exports = {
@@ -71,4 +83,5 @@ module.exports = {
   fetchArticlesById,
   fetchCommentsByArticleId,
   insertCommentByArticleId,
+  updateArticleById,
 };
