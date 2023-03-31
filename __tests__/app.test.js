@@ -428,9 +428,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
 
 describe("/api/comments/:comment_id", () => {
   test("DELETE 204: successfully deletes the given comment by comment_id and responds with a status 204 code and no content", () => {
-    return request(app)
-      .delete("/api/comments/5")
-      .expect(204)
+    return request(app).delete("/api/comments/5").expect(204);
   });
   test("DELETE 400: responds with an error message when user inputs an invalid URL", () => {
     return request(app)
@@ -446,6 +444,27 @@ describe("/api/comments/:comment_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Comment does not exist");
+      });
+  });
+});
+
+describe("ENDPOINT: /api/users", () => {
+  test("GET 200: response with an array of article objects, with all the correct properties", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users).toHaveLength(4);
+        expect(
+          users.forEach((user) => {
+            expect(user).toMatchObject({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String),
+            });
+          })
+        );
       });
   });
 });
