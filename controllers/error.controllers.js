@@ -20,7 +20,9 @@ const handlePsqlErrorsMiddleware = (err, req, res, next) => {
       .status(400)
       .send({ msg: "Out of range for type integer - choose a smaller number" });
   } else if (err.code === "23503") {
-    res.status(400).send({ msg: "Foreign key constraint" });
+    res.status(404).send({ msg: err.detail });
+  } else if (err.code === "23502") {
+    res.status(400).send({ msg: `Malformed body/missing required fields` });
   } else next(err);
 };
 

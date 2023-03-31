@@ -304,7 +304,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         });
       });
   });
-  test("POST 400: responds with a 400 status code and error message if user inputs an invalid number", () => {
+  test("POST 400: responds with a 400 status code and error message if user inputs a number that is out of range of request", () => {
     const requestBody = {
       username: "butter_bridge",
       body: "I am 100% sure that we're not completely sure.",
@@ -330,7 +330,9 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       .send(requestBody)
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Article ID does not exist");
+        expect(body.msg).toBe(
+          'Key (article_id)=(5432) is not present in table "articles".'
+        );
       });
   });
 
@@ -358,7 +360,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       });
   });
 
-  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but missing post body.body property", () => {
+  test("POST 400: responds with a 400 status code and error message if user inputs a valid article number but missing post body.body property", () => {
     const requestBody = {
       username: "hi",
     };
@@ -371,7 +373,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       });
   });
 
-  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but invalid post body property data types", () => {
+  test("POST 404 - Username not found", () => {
     const requestBody = {
       username: 5,
       body: 5,
@@ -379,9 +381,11 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
     return request(app)
       .post("/api/articles/5/comments")
       .send(requestBody)
-      .expect(400)
+      .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Foreign key constraint");
+        expect(body.msg).toBe(
+          'Key (author)=(5) is not present in table "users".'
+        );
       });
   });
 
