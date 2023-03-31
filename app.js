@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 const { getTopics } = require("./controllers/topics.controllers.js");
+const { getUsers } = require('./controllers/users.controllers.js')
 const {
   getArticlesById,
   getAllArticles,
@@ -18,9 +19,13 @@ app.use(express.json());
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticlesById);
-app.patch("/api/articles/:article_id", patchArticleById)
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+app.get("/api/users", getUsers)
+
+app.patch("/api/articles/:article_id", patchArticleById)
+
 app.post("/api/articles/:article_id/comments", postCommentByArticleId);
+
 app.delete("/api/comments/:comment_id", deleteCommentById)
 
 app.use(customErrorMiddleware);
