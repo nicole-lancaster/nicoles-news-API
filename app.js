@@ -5,7 +5,7 @@ const { getTopics } = require("./controllers/topics.controllers.js");
 const {
   getArticlesById,
   getAllArticles,
-  getCommentsByArticleId, postCommentByArticleId,
+  getCommentsByArticleId, postCommentByArticleId, patchArticleById
 } = require("./controllers/articles.controllers");
 const {
   badUrlHandling,
@@ -18,6 +18,7 @@ app.use(express.json());
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticlesById);
+app.patch("/api/articles/:article_id", patchArticleById)
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 app.post("/api/articles/:article_id/comments", postCommentByArticleId);
 

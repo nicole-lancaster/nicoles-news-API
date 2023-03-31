@@ -13,6 +13,8 @@ const customErrorMiddleware = (err, request, response, next) => {
 const handlePsqlErrorsMiddleware = (err, req, res, next) => {
   if (err.code === "22P02") {
     res.status(400).send({ msg: "Invalid input" });
+  } else if (err.code === "23502") {
+    res.status(400).send({ msg: `Malformed body/missing required fields` });
   } else if (err.code === "22003") {
     res
       .status(400)

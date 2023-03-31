@@ -64,9 +64,31 @@ const insertCommentByArticleId = (article_id, comment, author) => {
   });
 };
 
+const updateArticleById = (article_id, votes) => {
+  const updateQueryStr = format(
+    `UPDATE articles SET votes = votes + %L WHERE article_id = %L
+    RETURNING author, title, article_id, body, topic, created_at, votes, article_img_url;
+    `,
+    votes,
+    article_id
+  );
+
+  return db.query(updateQueryStr).then(({ rows }) => {
+    if (rows.length > 0) {
+      return rows[0];
+    } else {
+      return Promise.reject({
+        status: 404,
+        msg: "Article ID does not exist",
+      });
+    }
+  });
+};
+
 module.exports = {
   fetchAllArticles,
   fetchArticlesById,
   fetchCommentsByArticleId,
   insertCommentByArticleId,
+  updateArticleById,
 };

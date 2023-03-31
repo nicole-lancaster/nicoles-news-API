@@ -3,6 +3,7 @@ const {
   fetchAllArticles,
   fetchCommentsByArticleId,
   insertCommentByArticleId,
+  updateArticleById,
 } = require("../models/articles.models.js");
 
 const getAllArticles = (request, response, next) => {
@@ -10,9 +11,7 @@ const getAllArticles = (request, response, next) => {
     .then((articles) => {
       return response.status(200).send({ articles: articles });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const getArticlesById = (request, response, next) => {
@@ -22,9 +21,7 @@ const getArticlesById = (request, response, next) => {
     .then((article) => {
       return response.status(200).send({ article: article });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const getCommentsByArticleId = (request, response, next) => {
@@ -41,9 +38,7 @@ const getCommentsByArticleId = (request, response, next) => {
           next(err);
         });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const postCommentByArticleId = (request, response, next) => {
@@ -53,9 +48,17 @@ const postCommentByArticleId = (request, response, next) => {
     .then((comment) => {
       response.status(201).send({ comment });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
+};
+
+const patchArticleById = (request, response, next) => {
+  const { article_id } = request.params;
+  const { inc_votes } = request.body;
+  updateArticleById(article_id, inc_votes)
+    .then((article) => {
+      response.status(200).send({ article });
+    })
+    .catch(next);
 };
 
 module.exports = {
@@ -63,4 +66,5 @@ module.exports = {
   getAllArticles,
   getCommentsByArticleId,
   postCommentByArticleId,
+  patchArticleById,
 };
