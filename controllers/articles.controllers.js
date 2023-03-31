@@ -56,7 +56,7 @@ const patchArticleById = (request, response, next) => {
   const { inc_votes } = request.body;
   updateArticleById(article_id, inc_votes)
     .then((article) => {
-      response.status(200).send({ article: article });
+      response.status(200).send({ article });
     })
     .catch(next);
 };

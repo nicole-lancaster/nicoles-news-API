@@ -211,6 +211,30 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         expect(body.msg).toBe("Invalid input");
       });
   });
+  test("PATCH 404: responds with a 400 status code and error message if user inputs a valid article number but invalid url param data types", () => {
+    const requestBody = {
+      inc_votes: 1,
+    };
+    return request(app)
+      .patch("/api/articles/pineapple")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+  test("PATCH 404: responds with 404 status code when user inputs a non-existent article number", () => {
+    const requestBody = {
+      inc_votes: 1,
+    };
+    return request(app)
+      .patch("/api/articles/234234234")
+      .send(requestBody)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article ID does not exist");
+      });
+  });
 });
 
 describe("ENDPOINT: /api/articles/:article_id/comments", () => {

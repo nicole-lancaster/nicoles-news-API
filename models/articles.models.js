@@ -73,8 +73,15 @@ const updateArticleById = (article_id, votes) => {
     article_id
   );
 
-  return db.query(updateQueryStr).then((result) => {
-    return result.rows[0];
+  return db.query(updateQueryStr).then(({ rows }) => {
+    if (rows.length > 0) {
+      return rows[0];
+    } else {
+      return Promise.reject({
+        status: 404,
+        msg: "Article ID does not exist",
+      });
+    }
   });
 };
 
