@@ -4,6 +4,7 @@ const {
   fetchCommentsByArticleId,
   insertCommentByArticleId,
   updateArticleById,
+  deletingCommentFromDb,
 } = require("../models/articles.models.js");
 
 const getAllArticles = (request, response, next) => {
@@ -61,10 +62,22 @@ const patchArticleById = (request, response, next) => {
     .catch(next);
 };
 
+const deleteCommentById = (request, response, next) => {
+  const { comment_id } = request.params;
+  deletingCommentFromDb(comment_id)
+    .then(() => {
+      response.status(204).send({});
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 module.exports = {
   getArticlesById,
   getAllArticles,
   getCommentsByArticleId,
   postCommentByArticleId,
   patchArticleById,
+  deleteCommentById,
 };
