@@ -425,3 +425,32 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("/api/comments/:comment_id", () => {
+  test("DELETE 204: successfully deletes the given comment by comment_id and responds with a status 204 code and no content", () => {
+    return request(app)
+      .delete("/api/comments/5")
+      .expect(204)
+      .then(({ body }) => {
+        console.log(body);
+        expect(body).toMatchObject({});
+      });
+  });
+  test("DELETE 400: responds with an error message when user inputs an invalid URL", () => {
+    return request(app)
+      .delete("/api/comments/pineapple")
+      .expect(400)
+      .then(({ body }) => {
+        console.log(body);
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+  test("DELETE 404: responds with an error message when user inputs a valid but non-existent comment ID", () => {
+    return request(app)
+      .delete("/api/comments/1208")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Comment does not exist");
+      });
+  });
+});

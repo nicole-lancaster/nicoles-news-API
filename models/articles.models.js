@@ -85,10 +85,34 @@ const updateArticleById = (article_id, votes) => {
   });
 };
 
+const deletingCommentFromDb = (comment_id) => {
+  return db
+    .query(
+      format(
+        `DELETE FROM comments 
+  WHERE comment_id = (%L)`,
+        comment_id
+      )
+    )
+    .then((result) => {
+      if (result.rowCount === 0) {
+        return Promise.reject({ status: 404, msg: "Comment does not exist" });
+      } else if (result.rowCount.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Invalid input",
+        });
+      } else {
+        return result;
+      }
+    });
+};
+
 module.exports = {
   fetchAllArticles,
   fetchArticlesById,
   fetchCommentsByArticleId,
   insertCommentByArticleId,
   updateArticleById,
+  deletingCommentFromDb,
 };
