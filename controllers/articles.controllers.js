@@ -11,9 +11,7 @@ const getAllArticles = (request, response, next) => {
     .then((articles) => {
       return response.status(200).send({ articles: articles });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const getArticlesById = (request, response, next) => {
@@ -23,9 +21,7 @@ const getArticlesById = (request, response, next) => {
     .then((article) => {
       return response.status(200).send({ article: article });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const getCommentsByArticleId = (request, response, next) => {
@@ -42,9 +38,7 @@ const getCommentsByArticleId = (request, response, next) => {
           next(err);
         });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const postCommentByArticleId = (request, response, next) => {
@@ -54,9 +48,7 @@ const postCommentByArticleId = (request, response, next) => {
     .then((comment) => {
       response.status(201).send({ comment });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 const patchArticleById = (request, response, next) => {
@@ -66,9 +58,7 @@ const patchArticleById = (request, response, next) => {
     .then((article) => {
       response.status(200).send({ article: article });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports = {
