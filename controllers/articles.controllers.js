@@ -66,7 +66,7 @@ const deleteCommentById = (request, response, next) => {
   const { comment_id } = request.params;
   deletingCommentFromDb(comment_id)
     .then(() => {
-      response.status(204).send({});
+      response.status(204).send();
     })
     .catch((err) => {
       next(err);

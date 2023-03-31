@@ -431,17 +431,12 @@ describe("/api/comments/:comment_id", () => {
     return request(app)
       .delete("/api/comments/5")
       .expect(204)
-      .then(({ body }) => {
-        console.log(body);
-        expect(body).toMatchObject({});
-      });
   });
   test("DELETE 400: responds with an error message when user inputs an invalid URL", () => {
     return request(app)
       .delete("/api/comments/pineapple")
       .expect(400)
       .then(({ body }) => {
-        console.log(body);
         expect(body.msg).toBe("Invalid input");
       });
   });
