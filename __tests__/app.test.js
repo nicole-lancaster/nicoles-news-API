@@ -249,7 +249,9 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       .send(requestBody)
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Article ID does not exist");
+        expect(body.msg).toBe(
+          'Key (article_id)=(5432) is not present in table "articles".'
+        );
       });
   });
 
@@ -300,7 +302,9 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
       .send(requestBody)
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Foreign key constraint");
+        expect(body.msg).toBe(
+          'Key (author)=(5) is not present in table "users".'
+        );
       });
   });
 
