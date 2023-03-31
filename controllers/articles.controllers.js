@@ -54,7 +54,7 @@ const postCommentByArticleId = (request, response, next) => {
     .then(() => {
       insertCommentByArticleId(article_id, body, username)
         .then((comment) => {
-          response.status(201).send({ comment: comment });
+          response.status(201).send({ comment });
         })
         .catch((err) => {
           next(err);

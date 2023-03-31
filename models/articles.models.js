@@ -59,11 +59,9 @@ const insertCommentByArticleId = (article_id, comment, author) => {
     [comment, author, article_id]
   );
 
-  return db
-    .query(insertCommentsQueryStr)
-    .then((result) => {
-      return result.rows[0];
-    });
+  return db.query(insertCommentsQueryStr).then((result) => {
+    return result.rows[0];
+  });
 };
 
 module.exports = {
