@@ -68,6 +68,7 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         });
       });
   });
+
   test("GET 400: responds with 400 status code when user inputs an invalid article_id", () => {
     return request(app)
       .get("/api/articles/pineapple")
@@ -84,6 +85,7 @@ describe("ENDPOINT: /api/articles/:article_id", () => {
         expect(body.msg).toBe("Article ID does not exist");
       });
   });
+
   test("GET 404: responds with 404 status code when user inputs article_id of 0 (which is a num but doesn't exist)", () => {
     return request(app)
       .get("/api/articles/0")
@@ -200,4 +202,135 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Invalid input");
       });
   });
+  test("POST 201: accepts a request of an object with username and body property, and responds withthe posted comment object", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toMatchObject({
+          comment_id: expect.any(Number),
+          votes: 0,
+          created_at: expect.any(String),
+          author: "butter_bridge",
+          body: "I am 100% sure that we're not completely sure.",
+          article_id: 5,
+        });
+      });
+  });
+  test("POST 400: responds with a 400 status code and error message if user inputs a number that is out of range of request", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/23423421123/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "Out of range for type integer - choose a smaller number"
+        );
+      });
+  });
+
+  test("POST 404: responds with a 404 status code and error message if user inputs an non existent article ID", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/5432/comments")
+      .send(requestBody)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          'Key (article_id)=(5432) is not present in table "articles".'
+        );
+      });
+  });
+
+  test("POST 400: responds with a 400 status code and error message if user inputs an invalid article ID", () => {
+    const requestBody = {
+      username: "butter_bridge",
+      body: "I am 100% sure that we're not completely sure.",
+    };
+    return request(app)
+      .post("/api/articles/apples/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but missing post body properties", () => {
+    const requestBody = {};
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
+      });
+  });
+
+  test("POST 400: responds with a 400 status code and error message if user inputs a valid article number but missing post body.body property", () => {
+    const requestBody = {
+      username: "hi",
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
+      });
+  });
+
+  test("POST 404 - Username not found", () => {
+    const requestBody = {
+      username: 5,
+      body: 5,
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          'Key (author)=(5) is not present in table "users".'
+        );
+      });
+  });
+
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but missing post body.username property", () => {
+    const requestBody = {
+      body: "hi",
+    };
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
+      });
+  });
+
+  test("POST 404: responds with a 400 status code and error message if user inputs a valid article number but undefined post body", () => {
+    const requestBody = undefined;
+    return request(app)
+      .post("/api/articles/5/comments")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Malformed body/missing required fields");
+      });
+  });
 });
+
+// /api/resource body: {} -> malformed body / missing required fields: 400 Bad Request
