@@ -67,7 +67,7 @@ describe("ENDPOINT: /api/articles", () => {
               created_at: expect.any(String),
               votes: expect.any(Number),
               article_img_url: expect.any(String),
-              comment_count: expect.any(String),
+              comment_count: expect.any(Number),
             });
           })
         );
@@ -142,19 +142,20 @@ describe("ENDPOINT: /api/articles", () => {
 describe("ENDPOINT: /api/articles/:article_id", () => {
   test("GET 200: should respond with a single (article) object, with all the correct properties", () => {
     return request(app)
-      .get("/api/articles/10")
+      .get("/api/articles/9")
       .expect(200)
       .then(({ body }) => {
         const { article } = body;
         expect(article).toMatchObject({
           author: expect.any(String),
           title: expect.any(String),
-          article_id: 10,
+          article_id: 9,
           body: expect.any(String),
           topic: expect.any(String),
           created_at: expect.any(String),
           votes: expect.any(Number),
           article_img_url: expect.any(String),
+          comment_count: 2,
         });
       });
   });

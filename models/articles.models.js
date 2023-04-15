@@ -13,7 +13,7 @@ const fetchAllArticles = (topic, sortBy, sortOrder) => {
   ) {
     return Promise.reject({ status: 400, msg: "Invalid sort by query" });
   }
-  const fetchArticlesQueryString1 = `SELECT articles.*, COUNT(comments.article_id) AS comment_count
+  const fetchArticlesQueryString1 = `SELECT articles.*, COUNT(comments.article_id)::int AS comment_count
   FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id`;
   const topicQuery = format(`WHERE articles.topic=%L`, topic);
   const fetchArticleQueryString2 = ` 
@@ -35,8 +35,10 @@ const fetchAllArticles = (topic, sortBy, sortOrder) => {
 const fetchArticlesById = (article_id) => {
   return db
     .query(
-      `SELECT * FROM articles 
-    WHERE article_id = $1;`,
+      `SELECT articles.*, COUNT(comments.article_id)::int AS comment_count
+      FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id
+      WHERE articles.article_id = $1 
+      GROUP BY articles.article_id`,
       [article_id]
     )
     .then(({ rows }) => {
