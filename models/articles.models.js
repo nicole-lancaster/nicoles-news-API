@@ -1,18 +1,21 @@
 const db = require("../db/connection.js");
 const format = require("pg-format");
 
-const fetchAllArticles = () => {
+const fetchAllArticles = (topic) => {
+  const fetchArticlesQueryString1 = `SELECT articles.*, COUNT(comments.article_id) AS comment_count
+  FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id`;
+  const topicQuery = format(`WHERE articles.topic=%L`, topic);
+  const fetchArticleQueryString2 = ` 
+  GROUP BY articles.article_id
+  ORDER BY created_at DESC;`;
+  const sqlQuery = `${fetchArticlesQueryString1} ${
+    topic ? topicQuery : ""
+  } ${fetchArticleQueryString2}`;
   return db
-    .query(
-      `SELECT articles.*, COUNT(comments.article_id) AS comment_count
-      FROM articles
-      LEFT JOIN comments ON comments.article_id = articles.article_id
-      GROUP BY articles.article_id
-      ORDER BY created_at DESC;`
-    )
+    .query(sqlQuery)
     .then(({ rows }) => {
       return rows;
-    });
+    })
 };
 
 const fetchArticlesById = (article_id) => {

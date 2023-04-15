@@ -84,6 +84,20 @@ describe("ENDPOINT: /api/articles", () => {
         });
       });
   });
+  test.only("GET 200: responds with objects sorted by a particular topic", () => {
+    return request(app)
+      .get("/api/articles?topic=cats")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toHaveLength(1);
+        expect(
+          articles.forEach((article) => {
+            expect(article.topic).toBe("cats");
+          })
+        );
+      });
+  });
 });
 
 describe("ENDPOINT: /api/articles/:article_id", () => {
@@ -428,9 +442,7 @@ describe("ENDPOINT: /api/articles/:article_id/comments", () => {
 
 describe("/api/comments/:comment_id", () => {
   test("DELETE 204: successfully deletes the given comment by comment_id and responds with a status 204 code and no content", () => {
-    return request(app)
-      .delete("/api/comments/5")
-      .expect(204)
+    return request(app).delete("/api/comments/5").expect(204);
   });
   test("DELETE 400: responds with an error message when user inputs an invalid URL", () => {
     return request(app)
