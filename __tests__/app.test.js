@@ -84,7 +84,7 @@ describe("ENDPOINT: /api/articles", () => {
         });
       });
   });
-  test.only("GET 200: responds with objects sorted by a particular topic", () => {
+  test("GET 200: responds with articles filtered by topic", () => {
     return request(app)
       .get("/api/articles?topic=cats")
       .expect(200)
@@ -96,6 +96,45 @@ describe("ENDPOINT: /api/articles", () => {
             expect(article.topic).toBe("cats");
           })
         );
+      });
+  });
+  test("GET 200: returns an empty array if the topic is valid but has no articles", () => {
+    return request(app)
+      .get("/api/articles?topic=paper")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toEqual([]);
+      });
+  });
+  test("GET 200: responds with articles sorted by the chosen column name", () => {
+    return request(app)
+      .get("/api/articles?sort_by=author")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toHaveLength(12);
+        expect(articles).toBeSortedBy("author");
+      });
+  });
+  test("GET 200: responds with an array of article objects for a selected category query and correctly sorted into descending order,", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=desc")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy("votes", {
+          descending: true,
+        });
+      });
+  });
+  test("GET 400: responds with error message if trying to sort by a category that is not allowed,", () => {
+    return request(app)
+      .get("/api/articles?sort_by=article_img_url")
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Invalid sort by query");
       });
   });
 });

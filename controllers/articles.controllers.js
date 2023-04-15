@@ -9,8 +9,10 @@ const {
 
 const getAllArticles = (request, response, next) => {
   const { topic } = request.query
-  console.log('request.query -->', request.query)
-  fetchAllArticles(topic)
+
+  const sortBy = request.query.sort_by;
+  const sortOrder = request.query.order
+  fetchAllArticles(topic, sortBy, sortOrder)
     .then((articles) => {
       return response.status(200).send({ articles: articles });
     })

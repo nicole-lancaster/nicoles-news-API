@@ -1,21 +1,34 @@
 const db = require("../db/connection.js");
 const format = require("pg-format");
 
-const fetchAllArticles = (topic) => {
+const fetchAllArticles = (topic, sortBy, sortOrder) => {
+  if (
+    sortBy &&
+    sortBy !== "title" &&
+    sortBy !== "author" &&
+    sortBy !== "body" &&
+    sortBy !== "created_at" &&
+    sortBy !== "votes"
+  ) {
+    return Promise.reject({ status: 400, msg: "Invalid sort by query" });
+  }
   const fetchArticlesQueryString1 = `SELECT articles.*, COUNT(comments.article_id) AS comment_count
   FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id`;
   const topicQuery = format(`WHERE articles.topic=%L`, topic);
   const fetchArticleQueryString2 = ` 
-  GROUP BY articles.article_id
-  ORDER BY created_at DESC;`;
+  GROUP BY articles.article_id`;
+  const defaultOrderByNewest = `ORDER BY created_at DESC`;
+  const sortByQuery = `ORDER BY ${sortBy}`;
+  const ascOrDesc = sortOrder === "desc" ? "DESC" : "";
+
   const sqlQuery = `${fetchArticlesQueryString1} ${
     topic ? topicQuery : ""
-  } ${fetchArticleQueryString2}`;
-  return db
-    .query(sqlQuery)
-    .then(({ rows }) => {
-      return rows;
-    })
+  } ${fetchArticleQueryString2} ${
+    sortBy ? sortByQuery : defaultOrderByNewest
+  } ${ascOrDesc}`;
+  return db.query(sqlQuery).then(({ rows }) => {
+    return rows;
+  });
 };
 
 const fetchArticlesById = (article_id) => {
