@@ -8,7 +8,11 @@ const {
 } = require("../models/articles.models.js");
 
 const getAllArticles = (request, response, next) => {
-  fetchAllArticles()
+  const { topic } = request.query
+
+  const sortBy = request.query.sort_by;
+  const sortOrder = request.query.order
+  fetchAllArticles(topic, sortBy, sortOrder)
     .then((articles) => {
       return response.status(200).send({ articles: articles });
     })
