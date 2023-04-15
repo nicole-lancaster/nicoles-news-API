@@ -8,7 +8,8 @@ const fetchAllArticles = (topic, sortBy, sortOrder) => {
     sortBy !== "author" &&
     sortBy !== "body" &&
     sortBy !== "created_at" &&
-    sortBy !== "votes"
+    sortBy !== "votes" &&
+    sortBy !== "comment_count"
   ) {
     return Promise.reject({ status: 400, msg: "Invalid sort by query" });
   }
