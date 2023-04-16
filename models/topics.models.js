@@ -6,8 +6,8 @@ const fetchTopics = () => {
     .then((topics) => {
       return topics.rows;
     })
-    .catch(() => {
-      console.log("error retrieving topics");
+    .catch((err) => {
+      next(err);
     });
 };
 
