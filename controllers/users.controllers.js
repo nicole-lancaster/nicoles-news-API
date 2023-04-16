@@ -1,4 +1,3 @@
-const users = require("../db/data/test-data/users");
 const { fetchUsers } = require("../models/users.models");
 
 const getUsers = (request, response, next) => {
