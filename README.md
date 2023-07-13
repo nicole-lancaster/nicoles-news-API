@@ -2,38 +2,59 @@
 
 ## Welcome
 
-The hosted version of this API can be accessed here: https://nc-news-portfolio.onrender.com
+This is my Application Programming Interface (API) for Nicole's News, which serves up data on multiple endpoints.
 
-- Summary
-This is a summary in here about the project
+Below is some more information about the API, including how you can set it up on your local machine.
 
-- Provide clear instructions of how to clone, install dependencies, seed local database, and run tests
+This API is hosted on onrender. The live version is hosted here: https://nicoles-news.netlify.app/
 
-- Specify minimum versions of `Node.js` and `Postgres` needed to run the project
+This was built using test-driven-development (TDD)
+
+# Summary
+
+Built with Node, Postgre and Express
+Follows REST principles
+Follows the Model-View-Controller (MVC) architectural pattern
+All endpoints and ? developed using test-driven development (TDD) using Jest
+
+# Prerequistes
+You will need Node and Postgres in order to run this API. The links for the minimum versions required and installation are below.
+
+Postgress
+Minimum version required:
+<Link for installation>
+
+Node
+Minimum version required:
+<Link for installation>
 
 
 If you would like to clone this respository, you will have to set up your own environment variables in order to successfully connect to the two databases. The instructions for this are below:
 
-1. Fork and clone this repository
+1. Clone this repository
+    - make sure you have git installed on your machine
+    - in your terminal, navigate to the location in which you wish to save this repository
+    - run this command: `git clone https://github.com/nicole-lancaster/nc-news-api`
+    - cd into the repository using this command: `cd nc-news-api`
+    - you are now ready to open this on your IDE of choice. If this is VSCode, run the command `code nc-news-api`
 
-2. Create two .env files, both in the root directory. 
-
-    - these should be named .env.test and .env.development
-    - each file should contain one line of code: PGDATABASE=<name-of-database>
-    - the names of the databases an be found in the setup.sql file
+3. Create two .env files, both in the root directory. 
+    - one should be named `.env.test` and the other named `.env.development`
+    - each file should contain one line of code: `PGDATABASE=<name-of-database>`
+    - the names of the databases can be found in the setup.sql file
     - make sure that the 'test' database is in the .env.test file
-    - make sure that both .env files are added to .gitignore
+    - make sure that both .env files are added to your gitignore file
 
-    You can see an example of the file names and their content in .env.example
+    You can see an example of the file names and their content in the `.env.example` file
 
-3. Run 'npm install' from your terminal
+4. Run `'npm install'` from your terminal
 
-4. Look in the package.json for the available scripts, you can use:
-    - 'npm run setup-dbs' - allows the databases to be set up
-    - 'npm run seed' - seeds all the data into the database
-    - npm test - runs the test suite - the env variable will connect to the test database and use the data in the test-data folder
+5. You can open the package.json for the available scripts, you can run:
+    - `npm run setup-dbs` - allows the databases to be set up
+    - `npm run seed` - seeds all the data into the database
+    - `npm test` - runs the test suite - the env variable will connect to the test database and use the data in the test-data folder
 
-5. Have fun!
+6. Have fun!
 
 
 
