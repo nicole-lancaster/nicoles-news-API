@@ -6,7 +6,7 @@ This is my Application Programming Interface (API) for Nicole's News, which serv
 
 Below is some more information about the API, including how you can set it up on your local machine.
 
-This API is hosted on onrenderhere --> https://nc-news-portfolio.onrender.com/ 
+This API is hosted here --> https://nc-news-portfolio.onrender.com/ 
 
 To view all available endpoints, you can make a GET request to /api or view the `endpoints.json` file in the repository.
 
