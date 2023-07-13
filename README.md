@@ -1,4 +1,4 @@
-# Northcoders News API
+# Nicole's News API
 
 ## Welcome
 
@@ -6,9 +6,12 @@ This is my Application Programming Interface (API) for Nicole's News, which serv
 
 Below is some more information about the API, including how you can set it up on your local machine.
 
-This API is hosted on onrender. The live version is hosted here: https://nicoles-news.netlify.app/
+This API is hosted on onrenderhere --> https://nc-news-portfolio.onrender.com/ 
 
-This was built using test-driven-development (TDD)
+To view all available endpoints, you can make a GET request to /api or view the `endpoints.json` file in the repository.
+
+This API is consumed in my front-end application of view and interact with here --> https://nicoles-news.netlify.app/
+
 
 # Summary
 
