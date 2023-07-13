@@ -30,6 +30,7 @@ Node
 Minimum version required: 18.13.0
 To check your current version: run `node -v` in your terminal
 
+#Getting set up
 You are now ready to set up the API on your own machine by following the steps below:
 
 1. Clone this repository
