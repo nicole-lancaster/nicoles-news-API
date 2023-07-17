@@ -1,6 +1,8 @@
-# Nicole's News API
+# Nicole's News API 📰
 
-## Welcome
+
+## Welcome 👋
+
 
 This is my Application Programming Interface (API) for Nicole's News, which serves up data on multiple endpoints.
 
@@ -20,7 +22,7 @@ Follows REST and CRUD principles
 Follows the Model-View-Controller (MVC) architectural pattern
 All endpoints and error handling developed using test-driven development (TDD) using Jest
 
-# Prerequistes
+# Prerequistes ⏸️
 You will need Node and Postgres in order to run this API. The links for the minimum versions required are below.
 
 Postgress
@@ -30,7 +32,7 @@ Node
 Minimum version required: 18.13.0
 To check your current version: run `node -v` in your terminal
 
-# Getting set up
+# Getting set up ▶️
 You are now ready to set up the API on your own machine by following the steps below:
 
 1. Clone this repository
@@ -63,4 +65,7 @@ You are now ready to set up the API on your own machine by following the steps b
 5. Have fun!
 
 
+## Feedback welcome 🫶
+
+I had a lot of fun building this, and always strive to improve. Any comments or suggestions for improvement are gratefully received so please feel free to submit a pull request or go to the social links on my main GitHub page to get in touch.
 
