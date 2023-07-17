@@ -15,14 +15,14 @@ To view all available endpoints, you can make a GET request to /api or view the 
 This API is consumed in my front-end application of view and interact with here --> https://nicoles-news.netlify.app/
 
 
-# Summary
+## Summary
 
 Built with Node, Postgres (PSQL) and Express
 Follows REST and CRUD principles
 Follows the Model-View-Controller (MVC) architectural pattern
 All endpoints and error handling developed using test-driven development (TDD) using Jest
 
-# Prerequistes ⏸️
+## Prerequistes ⏸️
 You will need Node and Postgres in order to run this API. The links for the minimum versions required are below.
 
 Postgress
@@ -32,7 +32,7 @@ Node
 Minimum version required: 18.13.0
 To check your current version: run `node -v` in your terminal
 
-# Getting set up ▶️
+## Getting set up ▶️
 You are now ready to set up the API on your own machine by following the steps below:
 
 1. Clone this repository
