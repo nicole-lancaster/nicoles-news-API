@@ -17,13 +17,13 @@ This API is consumed in my front-end application of view and interact with here 
 
 ## Summary
 
-Built with Node, Postgres (PSQL) and Express
-Follows REST and CRUD principles
-Follows the Model-View-Controller (MVC) architectural pattern
-All endpoints and error handling developed using test-driven development (TDD) using Jest
+- Built with Node, Postgres (PSQL) and Express
+- Follows REST and CRUD principles
+- Follows the Model-View-Controller (MVC) architectural pattern
+- All endpoints and error handling developed using test-driven development (TDD) using Jest
 
 ## Prerequistes ⏸️
-You will need Node and Postgres in order to run this API. The links for the minimum versions required are below.
+You will need Node and Postgres in order to run this API:
 
 Postgress
 Minimum version required: 12.14
